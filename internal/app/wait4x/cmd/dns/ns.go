@@ -37,13 +37,13 @@ func NewNSCommand() *cobra.Command {
 			return nil
 		},
 		Example: `
-  # Check NS existence
+  # Check NS records existence
   wait4x dns NS wait4x.dev
 
-  # Check NS is wait4x.dev
+  # Check NS records with expected nameservers
   wait4x dns NS wait4x.dev --expected-nameserver 'emma.ns.cloudflare.com'
 
-  # Check NS by defined nameserver
+  # Check NS records by defined nameserver
   wait4x dns NS wait4x.dev --expected-nameserver 'emma.ns.cloudflare.com' -n gordon.ns.cloudflare.com
 `,
 		RunE: runNS,

@@ -37,13 +37,13 @@ func NewMXCommand() *cobra.Command {
 			return nil
 		},
 		Example: `
-  # Check MX existence
+  # Check MX records existence
   wait4x dns MX wait4x.dev
 
-  # Check MX is wait4x.dev
+  # Check MX records with expected domains
   wait4x dns MX wait4x.dev --expected-domain 'route1.mx.cloudflare.net'
 
-  # Check MX by defined nameserver
+  # Check MX records by defined nameserver
   wait4x dns MX wait4x.dev --expected-domain 'route1.mx.cloudflare.net.' -n gordon.ns.cloudflare.com
 `,
 		RunE: runMX,

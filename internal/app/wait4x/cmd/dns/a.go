@@ -37,13 +37,13 @@ func NewACommand() *cobra.Command {
 			return nil
 		},
 		Example: `
-  # Check A existence
+  # Check A records existence
   wait4x dns A wait4x.dev
 
-  # Check A is wait4x.dev
+  # Check A records with expected ips
   wait4x dns A wait4x.dev --expected-ip 172.67.154.180
 
-  # Check A by defined nameserver
+  # Check A records by defined nameserver
   wait4x dns A wait4x.dev --expected-ip 172.67.154.180 -n gordon.ns.cloudflare.com
 `,
 		RunE: runA,

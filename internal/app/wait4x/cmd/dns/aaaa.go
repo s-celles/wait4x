@@ -37,13 +37,13 @@ func NewAAAACommand() *cobra.Command {
 			return nil
 		},
 		Example: `
-  # Check AAAA existence
+  # Check AAAA records existence
   wait4x dns AAAA wait4x.dev
 
-  # Check AAAA is wait4x.dev
+  # Check AAAA records with expected ips
   wait4x dns AAAA wait4x.dev --expected-ip '2606:4700:3033::ac43:9ab4'
 
-  # Check AAAA by defined nameserver
+  # Check AAAA records by defined nameserver
   wait4x dns AAAA wait4x.dev --expected-ip '2606:4700:3033::ac43:9ab4' -n gordon.ns.cloudflare.com
 `,
 		RunE: runAAAA,

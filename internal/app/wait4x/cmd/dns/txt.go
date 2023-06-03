@@ -37,13 +37,13 @@ func NewTXTCommand() *cobra.Command {
 			return nil
 		},
 		Example: `
-  # Check TXT existence
+  # Check TXT records existence
   wait4x dns TXT wait4x.dev
 
-  # Check TXT is wait4x.dev
+  # Check TXT records with expected values
   wait4x dns TXT wait4x.dev --expected-value 'include:_spf.mx.cloudflare.net'
 
-  # Check TXT by defined nameserver
+  # Check TXT records by defined nameserver
   wait4x dns TXT wait4x.dev --expected-value 'include:_spf.mx.cloudflare.net' -n gordon.ns.cloudflare.com
 `,
 		RunE: runTXT,

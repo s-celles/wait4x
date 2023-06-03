@@ -37,13 +37,13 @@ func NewCNAMECommand() *cobra.Command {
 			return nil
 		},
 		Example: `
-  # Check CNAME existence
+  # Check CNAME record existence
   wait4x dns CNAME 172.67.154.180
 
-  # Check CNAME is wait4x.dev
+  # Check CNAME records with expected ips
   wait4x dns CNAME 172.67.154.180 --expected-domain wait4x.dev
 
-  # Check CNAME by defined nameserver
+  # Check CNAME record by defined nameserver
   wait4x dns CNAME 172.67.154.180 --expected-domain wait4x.dev -n gordon.ns.cloudflare.com
 `,
 		RunE: runCNAME,
