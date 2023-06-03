@@ -27,6 +27,6 @@ func TestIncorrectAAAA(t *testing.T) {
 }
 
 func TestCustomNSCorrectAAAA(t *testing.T) {
-	d := New(server, WithNameServer("8.8.8.8"), WithExpectedIPV6s([]string{"2606:4700:3034::6815:591"}))
+	d := New(server, WithNameServer("8.8.8.8:53"), WithExpectedIPV6s([]string{"2606:4700:3034::6815:591"}))
 	assert.Nil(t, d.Check(context.Background()))
 }
