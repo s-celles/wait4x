@@ -16,15 +16,16 @@ package dns
 
 import (
 	"errors"
+
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
-	"wait4x.dev/v2/checker/dns"
+	dns "wait4x.dev/v2/checker/dns/txt"
 	"wait4x.dev/v2/waiter"
 )
 
 func NewTXTCommand() *cobra.Command {
 	command := &cobra.Command{
-		Use:     "TXT ADDRESS [value] [--command [args...]]",
+		Use:     "TXT ADDRESS [--command [args...]]",
 		Aliases: []string{"txt"},
 		Short:   "Check DNS TXT records",
 		Args: func(cmd *cobra.Command, args []string) error {
@@ -39,13 +40,15 @@ func NewTXTCommand() *cobra.Command {
   wait4x dns TXT wait4x.dev
 
   # Check TXT is wait4x.dev
-  wait4x dns TXT wait4x.dev 'include:_spf.mx.cloudflare.net'
+  wait4x dns TXT wait4x.dev --expected-value 'include:_spf.mx.cloudflare.net'
 
   # Check TXT by defined nameserver
-  wait4x dns TXT wait4x.dev 'include:_spf.mx.cloudflare.net' -n gordon.ns.cloudflare.com
+  wait4x dns TXT wait4x.dev --expected-value 'include:_spf.mx.cloudflare.net' -n gordon.ns.cloudflare.com
 `,
 		RunE: runTXT,
 	}
+
+	command.Flags().StringArray("expect-value", nil, "Expect values.")
 
 	return command
 }
@@ -55,6 +58,7 @@ func runTXT(cmd *cobra.Command, args []string) error {
 	timeout, _ := cmd.Flags().GetDuration("timeout")
 	invertCheck, _ := cmd.Flags().GetBool("invert-check")
 	nameserver, _ := cmd.Flags().GetString("nameserver")
+	expectValues, _ := cmd.Flags().GetStringArray("expect-value")
 
 	logger, err := logr.FromContext(cmd.Context())
 	if err != nil {
@@ -62,16 +66,13 @@ func runTXT(cmd *cobra.Command, args []string) error {
 	}
 
 	address := args[0]
-	var expectedValue string
-	if len(args) == 2 {
-		expectedValue = args[1]
-	}
 
-	dc := dns.New(dns.TXT,
+	dc := dns.New(
 		address,
-		dns.WithExpectedValue(expectedValue),
+		dns.WithExpectedValues(expectValues),
 		dns.WithNameServer(nameserver),
 	)
+
 	return waiter.WaitContext(cmd.Context(),
 		dc,
 		waiter.WithTimeout(timeout),

@@ -16,15 +16,16 @@ package dns
 
 import (
 	"errors"
+
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
-	"wait4x.dev/v2/checker/dns"
+	dns "wait4x.dev/v2/checker/dns/aaaa"
 	"wait4x.dev/v2/waiter"
 )
 
 func NewAAAACommand() *cobra.Command {
 	command := &cobra.Command{
-		Use:     "AAAA ADDRESS [value] [--command [args...]]",
+		Use:     "AAAA ADDRESS [--command [args...]]",
 		Aliases: []string{"aaaa"},
 		Short:   "Check DNS AAAA records",
 		Args: func(cmd *cobra.Command, args []string) error {
@@ -39,13 +40,15 @@ func NewAAAACommand() *cobra.Command {
   wait4x dns AAAA wait4x.dev
 
   # Check AAAA is wait4x.dev
-  wait4x dns AAAA wait4x.dev '2606:4700:3033::ac43:9ab4'
+  wait4x dns AAAA wait4x.dev --expected-ip '2606:4700:3033::ac43:9ab4'
 
   # Check AAAA by defined nameserver
-  wait4x dns AAAA wait4x.dev '2606:4700:3033::ac43:9ab4' -n gordon.ns.cloudflare.com
+  wait4x dns AAAA wait4x.dev --expected-ip '2606:4700:3033::ac43:9ab4' -n gordon.ns.cloudflare.com
 `,
 		RunE: runAAAA,
 	}
+
+	command.Flags().StringArray("expect-ip", nil, "Expect ipv6s.")
 
 	return command
 }
@@ -55,6 +58,7 @@ func runAAAA(cmd *cobra.Command, args []string) error {
 	timeout, _ := cmd.Flags().GetDuration("timeout")
 	invertCheck, _ := cmd.Flags().GetBool("invert-check")
 	nameserver, _ := cmd.Flags().GetString("nameserver")
+	expectIPs, _ := cmd.Flags().GetStringArray("expect-ip")
 
 	logger, err := logr.FromContext(cmd.Context())
 	if err != nil {
@@ -62,14 +66,10 @@ func runAAAA(cmd *cobra.Command, args []string) error {
 	}
 
 	address := args[0]
-	var expectedValue string
-	if len(args) == 2 {
-		expectedValue = args[1]
-	}
 
-	dc := dns.New(dns.AAAA,
+	dc := dns.New(
 		address,
-		dns.WithExpectedValue(expectedValue),
+		dns.WithExpectedIPV6s(expectIPs),
 		dns.WithNameServer(nameserver),
 	)
 

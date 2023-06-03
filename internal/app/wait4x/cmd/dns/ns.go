@@ -16,15 +16,16 @@ package dns
 
 import (
 	"errors"
+
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
-	"wait4x.dev/v2/checker/dns"
+	dns "wait4x.dev/v2/checker/dns/ns"
 	"wait4x.dev/v2/waiter"
 )
 
 func NewNSCommand() *cobra.Command {
 	command := &cobra.Command{
-		Use:     "NS ADDRESS [value] [--command [args...]]",
+		Use:     "NS ADDRESS [--command [args...]]",
 		Aliases: []string{"ns"},
 		Short:   "Check DNS NS records",
 		Args: func(cmd *cobra.Command, args []string) error {
@@ -39,13 +40,15 @@ func NewNSCommand() *cobra.Command {
   wait4x dns NS wait4x.dev
 
   # Check NS is wait4x.dev
-  wait4x dns NS wait4x.dev 'emma.ns.cloudflare.com'
+  wait4x dns NS wait4x.dev --expected-nameserver 'emma.ns.cloudflare.com'
 
   # Check NS by defined nameserver
-  wait4x dns NS wait4x.dev 'emma.ns.cloudflare.com' -n gordon.ns.cloudflare.com
+  wait4x dns NS wait4x.dev --expected-nameserver 'emma.ns.cloudflare.com' -n gordon.ns.cloudflare.com
 `,
 		RunE: runNS,
 	}
+
+	command.Flags().StringArray("expect-nameserver", nil, "Expect nameservers.")
 
 	return command
 }
@@ -55,6 +58,7 @@ func runNS(cmd *cobra.Command, args []string) error {
 	timeout, _ := cmd.Flags().GetDuration("timeout")
 	invertCheck, _ := cmd.Flags().GetBool("invert-check")
 	nameserver, _ := cmd.Flags().GetString("nameserver")
+	expectNameservers, _ := cmd.Flags().GetStringArray("expect-nameserver")
 
 	logger, err := logr.FromContext(cmd.Context())
 	if err != nil {
@@ -62,14 +66,10 @@ func runNS(cmd *cobra.Command, args []string) error {
 	}
 
 	address := args[0]
-	var expectedValue string
-	if len(args) == 2 {
-		expectedValue = args[1]
-	}
 
-	dc := dns.New(dns.NS,
+	dc := dns.New(
 		address,
-		dns.WithExpectedValue(expectedValue),
+		dns.WithExpectedNameservers(expectNameservers),
 		dns.WithNameServer(nameserver),
 	)
 
