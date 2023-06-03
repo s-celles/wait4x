@@ -36,7 +36,7 @@ type CNAME struct {
 // New creates the DNS CNAME checker
 func New(address string, opts ...Option) checker.Checker {
 	d := &CNAME{
-		address: address,
+		address:  address,
 		resolver: net.DefaultResolver,
 	}
 

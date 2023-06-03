@@ -37,7 +37,7 @@ type MX struct {
 // New creates the DNS MX checker
 func New(address string, opts ...Option) checker.Checker {
 	d := &MX{
-		address: address,
+		address:  address,
 		resolver: net.DefaultResolver,
 	}
 

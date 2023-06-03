@@ -35,7 +35,7 @@ type AAAA struct {
 // New creates the DNS AAAA checker
 func New(address string, opts ...Option) checker.Checker {
 	d := &AAAA{
-		address: address,
+		address:  address,
 		resolver: net.DefaultResolver,
 	}
 

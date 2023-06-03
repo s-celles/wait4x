@@ -36,7 +36,7 @@ type TXT struct {
 // New creates the DNS TXT checker
 func New(address string, opts ...Option) checker.Checker {
 	d := &TXT{
-		address: address,
+		address:  address,
 		resolver: net.DefaultResolver,
 	}
 
