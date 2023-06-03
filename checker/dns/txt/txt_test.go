@@ -27,7 +27,7 @@ func TestIncorrectTXT(t *testing.T) {
 }
 
 func TestCustomNSCorrectTXT(t *testing.T) {
-	d := New(server, WithNameServer("8.8.8.8"), WithExpectedValues([]string{"v=spf1 include:_spf.mx.cloudflare.net ~all"}))
+	d := New(server, WithNameServer("8.8.8.8:53"), WithExpectedValues([]string{"v=spf1 include:_spf.mx.cloudflare.net ~all"}))
 	assert.Nil(t, d.Check(context.Background()))
 }
 
