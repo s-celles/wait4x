@@ -27,7 +27,7 @@ func TestIncorrectCNAME(t *testing.T) {
 }
 
 func TestCustomNSCorrectCNAME(t *testing.T) {
-	d := New(server, WithExpectedDomains([]string{"wait4x.dev"}))
+	d := New(server, WithNameServer("8.8.8.8"), WithExpectedDomains([]string{"wait4x.dev"}))
 	assert.Nil(t, d.Check(context.Background()))
 }
 

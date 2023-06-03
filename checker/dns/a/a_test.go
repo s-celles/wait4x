@@ -27,6 +27,6 @@ func TestIncorrectA(t *testing.T) {
 }
 
 func TestCustomNSCorrectA(t *testing.T) {
-	d := New(server, WithExpectedIPV4s([]string{"172.67.154.180"}))
+	d := New(server, WithNameServer("8.8.8.8"), WithExpectedIPV4s([]string{"172.67.154.180"}))
 	assert.Nil(t, d.Check(context.Background()))
 }

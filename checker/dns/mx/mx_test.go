@@ -27,7 +27,7 @@ func TestIncorrectMX(t *testing.T) {
 }
 
 func TestCustomNSCorrectA(t *testing.T) {
-	d := New(server, WithExpectedDomains([]string{"route1.mx.cloudflare.net"}))
+	d := New(server, WithNameServer("8.8.8.8"), WithExpectedDomains([]string{"route1.mx.cloudflare.net"}))
 	assert.Nil(t, d.Check(context.Background()))
 }
 

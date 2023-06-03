@@ -16,7 +16,6 @@ package a
 
 import (
 	"context"
-	"fmt"
 	"net"
 
 	"wait4x.dev/v2/checker"
@@ -37,6 +36,7 @@ type A struct {
 func New(address string, opts ...Option) checker.Checker {
 	d := &A{
 		address: address,
+		resolver: net.DefaultResolver,
 	}
 
 	// apply the list of options to A
@@ -45,7 +45,6 @@ func New(address string, opts ...Option) checker.Checker {
 	}
 
 	// Nameserver settings.
-	d.resolver = net.DefaultResolver
 	if d.nameserver != "" {
 		d.resolver = &net.Resolver{
 			Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
@@ -74,7 +73,7 @@ func WithExpectedIPV4s(ips []string) Option {
 
 // Identity returns the identity of the checker
 func (d *A) Identity() (string, error) {
-	return fmt.Sprintf("A %s %s", d.address, d.expectedIPs), nil
+	return d.address, nil
 }
 
 // Check checks A DNS records

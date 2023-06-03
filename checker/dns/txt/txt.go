@@ -16,7 +16,6 @@ package txt
 
 import (
 	"context"
-	"fmt"
 	"net"
 	"regexp"
 
@@ -38,6 +37,7 @@ type TXT struct {
 func New(address string, opts ...Option) checker.Checker {
 	d := &TXT{
 		address: address,
+		resolver: net.DefaultResolver,
 	}
 
 	// apply the list of options to TXT
@@ -46,7 +46,6 @@ func New(address string, opts ...Option) checker.Checker {
 	}
 
 	// Nameserver settings.
-	d.resolver = net.DefaultResolver
 	if d.nameserver != "" {
 		d.resolver = &net.Resolver{
 			Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
@@ -75,7 +74,7 @@ func WithExpectedValues(values []string) Option {
 
 // Identity returns the identity of the checker
 func (d *TXT) Identity() (string, error) {
-	return fmt.Sprintf("TXT %s %s", d.address, d.expectedValues), nil
+	return d.address, nil
 }
 
 // Check checks DNS TXT records

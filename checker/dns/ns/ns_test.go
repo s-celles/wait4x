@@ -27,7 +27,7 @@ func TestIncorrectNS(t *testing.T) {
 }
 
 func TestCustomNSCorrectNS(t *testing.T) {
-	d := New(server, WithExpectedNameservers([]string{"gordon.ns.cloudflare.com."}))
+	d := New(server, WithNameServer("8.8.8.8"), WithExpectedNameservers([]string{"gordon.ns.cloudflare.com."}))
 	assert.Nil(t, d.Check(context.Background()))
 }
 
