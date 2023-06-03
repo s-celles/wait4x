@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package a
 
 import (
@@ -21,10 +22,10 @@ import (
 	"wait4x.dev/v2/checker"
 )
 
-// Option configures an DNS.
+// Option configures an DNS A records
 type Option func(d *A)
 
-// DNS data structure.
+// A represents DNS A data structure
 type A struct {
 	nameserver  string
 	address     string
@@ -32,13 +33,13 @@ type A struct {
 	resolver    *net.Resolver
 }
 
-// New creates the DNS checker
+// New creates the DNS A checker
 func New(address string, opts ...Option) checker.Checker {
 	d := &A{
 		address: address,
 	}
 
-	// apply the list of options to HTTP
+	// apply the list of options to A
 	for _, opt := range opts {
 		opt(d)
 	}
@@ -57,12 +58,14 @@ func New(address string, opts ...Option) checker.Checker {
 	return d
 }
 
+// WithNameServer overrides the default nameserver
 func WithNameServer(nameserver string) Option {
 	return func(d *A) {
 		d.nameserver = nameserver
 	}
 }
 
+// WithExpectedIPV4s sets expected IPv4s
 func WithExpectedIPV4s(ips []string) Option {
 	return func(d *A) {
 		d.expectedIPs = ips

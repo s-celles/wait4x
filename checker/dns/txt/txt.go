@@ -1,5 +1,3 @@
-package txt
-
 // Copyright 2023 The Wait4X Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +12,8 @@ package txt
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+package txt
+
 import (
 	"context"
 	"fmt"
@@ -23,10 +23,10 @@ import (
 	"wait4x.dev/v2/checker"
 )
 
-// Option configures an TXT DNS.
+// Option configures an DNS TXT records
 type Option func(d *TXT)
 
-// TXT data structure.
+// TXT represents DNS TXT data structure
 type TXT struct {
 	nameserver     string
 	address        string
@@ -40,7 +40,7 @@ func New(address string, opts ...Option) checker.Checker {
 		address: address,
 	}
 
-	// apply the list of options to HTTP
+	// apply the list of options to TXT
 	for _, opt := range opts {
 		opt(d)
 	}
@@ -59,12 +59,14 @@ func New(address string, opts ...Option) checker.Checker {
 	return d
 }
 
+// WithNameServer overrides the default nameserver
 func WithNameServer(nameserver string) Option {
 	return func(d *TXT) {
 		d.nameserver = nameserver
 	}
 }
 
+// WithExpectedValues sets expected values
 func WithExpectedValues(values []string) Option {
 	return func(d *TXT) {
 		d.expectedValues = values

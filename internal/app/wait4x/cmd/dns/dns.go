@@ -18,6 +18,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// NewDNSCommand creates the DNS command
 func NewDNSCommand() *cobra.Command {
 	command := &cobra.Command{
 		Use:   "dns",

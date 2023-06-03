@@ -23,6 +23,7 @@ import (
 	"wait4x.dev/v2/waiter"
 )
 
+// NewACommand creates the DNS A command
 func NewACommand() *cobra.Command {
 	command := &cobra.Command{
 		Use:     "A ADDRESS [value] [--command [args...]]",

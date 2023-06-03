@@ -1,5 +1,3 @@
-package cname
-
 // Copyright 2023 The Wait4X Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +12,8 @@ package cname
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+package cname
+
 import (
 	"context"
 	"fmt"
@@ -23,10 +23,10 @@ import (
 	"wait4x.dev/v2/checker"
 )
 
-// Option configures an CNAME DNS.
+// Option configures an DNS CNAME record
 type Option func(d *CNAME)
 
-// CNAME data structure.
+// CNAME represents DNS CNAME data structure
 type CNAME struct {
 	nameserver      string
 	address         string
@@ -34,13 +34,13 @@ type CNAME struct {
 	resolver        *net.Resolver
 }
 
-// New creates the DNS TXT checker
+// New creates the DNS CNAME checker
 func New(address string, opts ...Option) checker.Checker {
 	d := &CNAME{
 		address: address,
 	}
 
-	// apply the list of options to HTTP
+	// apply the list of options to CNAME
 	for _, opt := range opts {
 		opt(d)
 	}
@@ -59,12 +59,14 @@ func New(address string, opts ...Option) checker.Checker {
 	return d
 }
 
+// WithNameServer overrides the default nameserver
 func WithNameServer(nameserver string) Option {
 	return func(d *CNAME) {
 		d.nameserver = nameserver
 	}
 }
 
+// WithExpectedDomains sets expected domains
 func WithExpectedDomains(doamins []string) Option {
 	return func(d *CNAME) {
 		d.expectedDomains = doamins

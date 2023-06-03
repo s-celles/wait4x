@@ -23,6 +23,7 @@ import (
 	"wait4x.dev/v2/waiter"
 )
 
+// NewMXCommand creates the DNS MX command
 func NewMXCommand() *cobra.Command {
 	command := &cobra.Command{
 		Use:     "MX ADDRESS [--command [args...]]",

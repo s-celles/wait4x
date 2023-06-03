@@ -23,6 +23,7 @@ import (
 	"wait4x.dev/v2/waiter"
 )
 
+// NewTXTCommand creates the DNS TXT command
 func NewTXTCommand() *cobra.Command {
 	command := &cobra.Command{
 		Use:     "TXT ADDRESS [--command [args...]]",

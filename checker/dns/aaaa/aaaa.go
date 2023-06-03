@@ -1,5 +1,3 @@
-package aaaa
-
 // Copyright 2023 The Wait4X Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +12,8 @@ package aaaa
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+package aaaa
+
 import (
 	"context"
 	"fmt"
@@ -22,10 +22,10 @@ import (
 	"wait4x.dev/v2/checker"
 )
 
-// Option configures an DNS.
+// Option configures an DNS AAAA records
 type Option func(d *AAAA)
 
-// AAAA data structure.
+// AAAA represents DNS AAAA data structure
 type AAAA struct {
 	nameserver  string
 	address     string
@@ -39,7 +39,7 @@ func New(address string, opts ...Option) checker.Checker {
 		address: address,
 	}
 
-	// apply the list of options to HTTP
+	// apply the list of options to AAAA
 	for _, opt := range opts {
 		opt(d)
 	}
@@ -58,12 +58,14 @@ func New(address string, opts ...Option) checker.Checker {
 	return d
 }
 
+// WithNameServer overrides the default nameserver
 func WithNameServer(nameserver string) Option {
 	return func(d *AAAA) {
 		d.nameserver = nameserver
 	}
 }
 
+// WithExpectedIPV6s sets expected IPv6s
 func WithExpectedIPV6s(ips []string) Option {
 	return func(d *AAAA) {
 		d.expectedIPs = ips

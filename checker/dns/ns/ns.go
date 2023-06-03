@@ -1,5 +1,3 @@
-package ns
-
 // Copyright 2023 The Wait4X Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +12,8 @@ package ns
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+package ns
+
 import (
 	"context"
 	"fmt"
@@ -23,10 +23,10 @@ import (
 	"wait4x.dev/v2/checker"
 )
 
-// Option configures an CNAME DNS.
+// Option configures an DNS NS records
 type Option func(d *NS)
 
-// NS data structure.
+// NS represents DNS NS data structure
 type NS struct {
 	nameserver          string
 	address             string
@@ -34,13 +34,13 @@ type NS struct {
 	resolver            *net.Resolver
 }
 
-// New creates the DNS TXT checker
+// New creates the DNS NS checker
 func New(address string, opts ...Option) checker.Checker {
 	d := &NS{
 		address: address,
 	}
 
-	// apply the list of options to HTTP
+	// apply the list of options to NS
 	for _, opt := range opts {
 		opt(d)
 	}
@@ -59,12 +59,14 @@ func New(address string, opts ...Option) checker.Checker {
 	return d
 }
 
+// WithNameServer overrides the default nameserver
 func WithNameServer(nameserver string) Option {
 	return func(d *NS) {
 		d.nameserver = nameserver
 	}
 }
 
+// WithExpectedNameservers sets expected nameservers
 func WithExpectedNameservers(nameservers []string) Option {
 	return func(d *NS) {
 		d.expectedNameservers = nameservers

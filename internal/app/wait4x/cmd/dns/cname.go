@@ -23,6 +23,7 @@ import (
 	"wait4x.dev/v2/waiter"
 )
 
+// NewCNAMECommand creates the DNS CNAME command
 func NewCNAMECommand() *cobra.Command {
 	command := &cobra.Command{
 		Use:     "CNAME ADDRESS [--command [args...]]",

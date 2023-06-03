@@ -23,10 +23,10 @@ import (
 	"wait4x.dev/v2/checker"
 )
 
-// Option configures an MX DNS.
+// Option configures an DNS MX records
 type Option func(d *MX)
 
-// DNS data structure.
+// MX represents DNS MX data structure
 type MX struct {
 	nameserver      string
 	address         string
@@ -34,13 +34,13 @@ type MX struct {
 	resolver        *net.Resolver
 }
 
-// New creates the DNS checker
+// New creates the DNS MX checker
 func New(address string, opts ...Option) checker.Checker {
 	d := &MX{
 		address: address,
 	}
 
-	// apply the list of options to HTTP
+	// apply the list of options to MX
 	for _, opt := range opts {
 		opt(d)
 	}
@@ -59,12 +59,14 @@ func New(address string, opts ...Option) checker.Checker {
 	return d
 }
 
+// WithNameServer overrides the default nameserver
 func WithNameServer(nameserver string) Option {
 	return func(d *MX) {
 		d.nameserver = nameserver
 	}
 }
 
+// WithExpectedDomains sets expected domains
 func WithExpectedDomains(domains []string) Option {
 	return func(d *MX) {
 		d.expectedDomains = domains
